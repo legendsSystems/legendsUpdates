@@ -1,0 +1,74 @@
+{
+  "version": "2.1.0",
+  "downloadUrl": "https://github.com/legendsSystems/legendsLog/releases/latest",
+  "releaseDate": "2025-01-08",
+  "compatibility": {
+    "fivem": ">=6683",
+    "frameworks": ["qbcore", "standalone"]
+  },
+  "updateLog": [
+    "🚀 Added enhanced HTTP logger with support for Graylog/GELF, Datadog, and Loki",
+    "🗑️ Removed redundant syslog.lua in favor of unified HTTP logger",
+    "⚡ Enhanced version checker with retry logic and 24-hour caching",
+    "🔧 Improved error handling throughout all logger modules",
+    "📊 Added semantic version comparison (major/minor/patch detection)",
+    "🎨 Enhanced console output with color-coded messages and emojis",
+    "🔄 Updated configuration structure (SysLogEnabled -> HTTPEnabled)",
+    "🛡️ Added robust convar validation and system-specific checks",
+    "📝 Updated documentation with comprehensive HTTP logger examples",
+    "🚨 Added export function for manual version checks"
+  ],
+  "breakingChanges": [
+    "Config.SysLogEnabled has been replaced with Config.HTTPEnabled",
+    "LOGHOST convar replaced with WEBPOINT + LOG_SYSTEM convars",
+    "syslog.lua file removed - use http.lua with LOG_SYSTEM='graylog'"
+  ],
+  "newFeatures": [
+    "Multi-system HTTP logger (Graylog, Datadog, Loki, Generic)",
+    "Advanced retry logic with exponential backoff",
+    "24-hour version check caching",
+    "Semantic version comparison",
+    "Enhanced error messages with specific troubleshooting"
+  ],
+  "bugFixes": [
+    "Fixed version checker pointing to wrong GitHub repository",
+    "Resolved circular dependency issues in HTTP logger",
+    "Improved JSON parsing error handling",
+    "Fixed buffer timeout configuration not being respected"
+  ],
+  "migration": {
+    "from": "1.x.x",
+    "instructions": [
+      "1. Update Config.SysLogEnabled to Config.HTTPEnabled in server/config.lua",
+      "2. Replace 'set LOGHOST' with 'set WEBPOINT' and 'set LOG_SYSTEM graylog' in server.cfg",
+      "3. Remove any manual syslog.lua references from custom code",
+      "4. Test HTTP logger with 'll:test http' command",
+      "5. Verify smart routing still works with new gelf destination"
+    ],
+    "configChanges": {
+      "removed": ["Config.SysLogEnabled", "Config.httpEnabled"],
+      "added": ["Config.HTTPEnabled"],
+      "convars": {
+        "removed": ["LOGHOST"],
+        "added": ["LOG_SYSTEM", "HTTP_LOGS_TIMEOUT", "HTTP_LOGS_MAX_RETRIES"]
+      }
+    }
+  },
+  "security": {
+    "notes": "This release includes security improvements in HTTP request handling and convar validation."
+  },
+  "performance": {
+    "improvements": [
+      "Reduced HTTP requests through intelligent caching",
+      "Optimized buffer management in HTTP logger",
+      "Improved memory usage in version checker"
+    ]
+  },
+  "testing": {
+    "commands": [
+      "ll:test http - Test enhanced HTTP logger",
+      "ll:status - Check system status",
+      "exports.legendsLog:CheckVersion() - Manual version check"
+    ]
+  }
+}
